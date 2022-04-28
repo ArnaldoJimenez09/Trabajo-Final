@@ -1,0 +1,71 @@
+create database Nothorios_Restaurant
+
+use Nothorios_Restaurant 
+
+create table cliente 
+(
+Id int identity primary key,
+Nombre nvarchar (40),
+Telefono Nvarchar (11),
+Direccion nvarchar (50)
+)
+
+create table Proveedor
+(
+Id int identity primary key,
+Nombre nvarchar (40),
+Rnc nvarchar (10),
+Telefono Nvarchar (11),
+Direccion nvarchar (50),
+correo nvarchar (40)
+)
+
+create table Empleado 
+(
+Id int identity primary key,
+Nombre nvarchar (40),
+Telefono Nvarchar (11),
+Perfil nvarchar (50)
+)
+
+create table Inventario  
+(
+Id int identity primary key,
+Descripcion nvarchar (40),
+Marca nvarchar (40),
+Grupo nvarchar (40),
+Precio numeric,
+Costo numeric
+)
+ 
+create table Facturacion 
+(
+Id int identity primary key,
+Id_Cliente int,
+Mesa nvarchar (40),
+Impuesto numeric,
+Precio numeric
+)
+
+create table Fact_Detalle
+(
+Id int identity primary key,
+Id_fact int,
+Id_Arti int,
+Cant int,
+Monto numeric,
+Impuesto numeric,
+)
+
+
+ALTER TABLE Facturacion
+ADD FOREIGN KEY (Id_Cliente) REFERENCES cliente(id);
+
+ALTER TABLE Facturacion
+ADD FOREIGN KEY (Id) REFERENCES Fact_Detalle(Id_fact);
+
+ALTER TABLE Facturacion  
+ADD FOREIGN KEY (Id_Arti) REFERENCES Inventario( Id);
+
+
+ALTER TABLE Inventario Add Id_Proove intq

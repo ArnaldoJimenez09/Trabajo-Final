@@ -1,0 +1,108 @@
+USE [Nothorios_Restaurant]
+GO
+/****** Object:  Table [dbo].[cliente]    Script Date: 29/03/2022 10:59:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[cliente](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [nvarchar](40) NULL,
+	[Telefono] [nvarchar](11) NULL,
+	[Direccion] [nvarchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Fact_Detalle]    Script Date: 29/03/2022 10:59:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Fact_Detalle](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Id_fact] [int] NULL,
+	[Id_Arti] [int] NULL,
+	[Cant] [int] NULL,
+	[Monto] [numeric](18, 0) NULL,
+	[Impuesto] [numeric](18, 0) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Facturacion]    Script Date: 29/03/2022 10:59:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Facturacion](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Cliente] [int] NULL,
+	[Mesa] [nvarchar](40) NULL,
+	[Impuesto] [numeric](18, 0) NULL,
+	[Precio] [numeric](18, 0) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Inventario]    Script Date: 29/03/2022 10:59:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Inventario](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [nvarchar](40) NULL,
+	[Marca] [nvarchar](40) NULL,
+	[Grupo] [nvarchar](40) NULL,
+	[Precio] [numeric](18, 0) NULL,
+	[Costo] [numeric](18, 0) NULL,
+	[Id_Proove] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Proveedor]    Script Date: 29/03/2022 10:59:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Proveedor](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [nvarchar](40) NULL,
+	[Rnc] [nvarchar](10) NULL,
+	[Telefono] [nvarchar](11) NULL,
+	[Direccion] [nvarchar](50) NULL,
+	[correo] [nvarchar](40) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Fact_Detalle]  WITH CHECK ADD  CONSTRAINT [FK_Fact_Detalle_Facturacion] FOREIGN KEY([Id_fact])
+REFERENCES [dbo].[Facturacion] ([Id])
+GO
+ALTER TABLE [dbo].[Fact_Detalle] CHECK CONSTRAINT [FK_Fact_Detalle_Facturacion]
+GO
+ALTER TABLE [dbo].[Fact_Detalle]  WITH CHECK ADD  CONSTRAINT [FK_Fact_Detalle_Inventario] FOREIGN KEY([Id_Arti])
+REFERENCES [dbo].[Inventario] ([Id])
+GO
+ALTER TABLE [dbo].[Fact_Detalle] CHECK CONSTRAINT [FK_Fact_Detalle_Inventario]
+GO
+ALTER TABLE [dbo].[Facturacion]  WITH CHECK ADD FOREIGN KEY([Id_Cliente])
+REFERENCES [dbo].[cliente] ([Id])
+GO
+ALTER TABLE [dbo].[Inventario]  WITH CHECK ADD  CONSTRAINT [FK_Inventario_Proveedor] FOREIGN KEY([Id_Proove])
+REFERENCES [dbo].[Proveedor] ([Id])
+GO
+ALTER TABLE [dbo].[Inventario] CHECK CONSTRAINT [FK_Inventario_Proveedor]
+GO
